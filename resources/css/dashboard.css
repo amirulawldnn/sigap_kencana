@@ -1,0 +1,1170 @@
+@import "leaflet/dist/leaflet.css";
+
+:root {
+    --header-height: 72px;
+    --primary: #2563eb;
+    --primary-light: #eff6ff;
+    --bg-body: #f8fafc;
+    --bg-surface: #ffffff;
+    --border-color: #e2e8f0;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Instrument Sans', sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    color: #0f172a;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* LAYOUT DASAR */
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* =====================================
+   SIDEBAR (LIGHT CLEAN STYLE)
+   ===================================== */
+.sidebar {
+    width: 260px;
+    background-color: var(--bg-surface);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    border-right: none;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 20;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* BRAND HEADER */
+.sidebar-brand {
+    height: var(--header-height);
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    position: relative;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    transition: padding 0.3s ease;
+}
+
+.brand-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    min-width: 0;
+    flex: 1;
+}
+
+.brand-logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.brand-wrapper:hover .brand-logo-icon {
+    transform: scale(1.04);
+}
+
+.brand-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity 0.2s ease;
+}
+
+/* Tombol Toggle di Sidebar */
+.btn-sidebar-toggle {
+    width: 32px;
+    height: 32px;
+    background-color: #f1f5f9;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    margin-left: auto;
+    transition: all 0.2s ease;
+}
+
+.btn-sidebar-toggle:hover {
+    background-color: #e2e8f0;
+    color: var(--text-main);
+}
+
+.toggle-icon {
+    width: 15px;
+    height: 15px;
+    transition: transform 0.3s ease;
+}
+
+/* NAVIGASI */
+.sidebar-nav {
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1;
+}
+
+.nav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.925rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    overflow: hidden;
+}
+
+.nav-link:hover {
+    color: var(--text-main);
+    background-color: #f8fafc;
+}
+
+.nav-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: currentColor;
+    transition: color 0.2s ease;
+}
+
+.nav-label {
+    transition: opacity 0.2s ease;
+}
+
+/* Status Menu Aktif (Shape Warna & Teks Biru) */
+.nav-link.active {
+    color: var(--primary);
+    font-weight: 600;
+    background-color: var(--primary-light);
+}
+
+.nav-link.active .nav-icon {
+    color: var(--primary);
+}
+
+/* Hilangkan strip border biru kiri */
+.nav-link .active-indicator {
+    display: none !important;
+}
+
+.sidebar-footer {
+    padding: 16px;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.footer-mini {
+    display: none;
+}
+
+/* Ikon Toggle State */
+.icon-collapse {
+    display: block;
+}
+
+.icon-expand {
+    display: none;
+}
+
+/* =====================================
+   COLLAPSED MINI SIDEBAR (WIDTH ~68px)
+   ===================================== */
+.sidebar.collapsed {
+    width: 68px;
+    margin-left: 0;
+}
+
+.sidebar.collapsed .sidebar-brand {
+    padding: 0 10px;
+    justify-content: center;
+}
+
+/* Sembunyikan logo & teks brand di mode ramping */
+.sidebar.collapsed .brand-wrapper {
+    display: none;
+}
+
+/* Tampilkan tombol toggle garis tiga di tengah */
+.sidebar.collapsed .btn-sidebar-toggle {
+    display: flex;
+    margin: 0 auto;
+    width: 38px;
+    height: 38px;
+    background-color: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+}
+
+.sidebar.collapsed .btn-sidebar-toggle:hover {
+    background-color: #dbeafe;
+}
+
+/* Ganti ikon panah menjadi garis tiga */
+.sidebar.collapsed .icon-collapse {
+    display: none;
+}
+
+.sidebar.collapsed .icon-expand {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.sidebar.collapsed .nav-link {
+    justify-content: center;
+    padding: 12px 0;
+    gap: 0;
+}
+
+.sidebar.collapsed .nav-label {
+    display: none;
+}
+
+.sidebar.collapsed .footer-full {
+    display: none;
+}
+
+.sidebar.collapsed .footer-mini {
+    display: inline-block;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+
+/* MAIN WRAPPER */
+.main-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* =====================================
+   TOP HEADER (MENYATU DENGAN LATAR APLIKASI)
+   ===================================== */
+.top-header {
+    background-color: transparent;
+    height: var(--header-height);
+    margin: 0;
+    padding: 0 28px;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+/* HEADER LEFT (JUDUL) */
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.3px;
+}
+
+/* HEADER RIGHT (SEARCH & PROFIL) */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* SEARCH INPUT */
+.header-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 8px 14px;
+    width: 280px;
+    max-width: 100%;
+    transition: all 0.25s ease;
+}
+
+.header-search:focus-within {
+    width: 320px;
+    background-color: #ffffff;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.search-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.header-search input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 0.875rem;
+    color: var(--text-main);
+    width: 100%;
+    font-family: inherit;
+}
+
+.header-search input::placeholder {
+    color: #94a3b8;
+}
+
+/* USER PROFILE */
+.header-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.header-profile:hover {
+    background-color: #f8fafc;
+}
+
+.profile-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-main);
+    line-height: 1.25;
+}
+
+.profile-role {
+    font-size: 0.725rem;
+    color: var(--text-muted);
+    line-height: 1.2;
+    margin-top: 1px;
+}
+
+/* =====================================
+   WADAH HALAMAN UTAMA (KANVAS ABU-ABU MELENGKUNG)
+   ===================================== */
+.content-body {
+    background-color: #f1f5f9;
+    border-top-left-radius: 24px;
+    margin: 0;
+    padding: 24px 28px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* =====================================
+   HEADER DASHBOARD: UCAPAN & FILTER PERIODE
+   ===================================== */
+.welcome-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.welcome-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.welcome-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.3px;
+}
+
+.app-name {
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+.welcome-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.welcome-location {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    margin-top: 4px;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.location-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+/* GRID CONTENT / KARTU FILTER PERIODE */
+.period-filter-card {
+    background-color: #ffffff;
+    padding: 12px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 0.725rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-icon {
+    width: 14px;
+    height: 14px;
+    color: var(--primary);
+}
+
+.filter-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.filter-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.period-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px 32px 6px 12px;
+    font-size: 0.825rem;
+    font-weight: 500;
+    color: var(--text-main);
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 13px;
+}
+
+.period-select:hover {
+    border-color: #cbd5e1;
+    background-color: #ffffff;
+}
+
+.period-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    background-color: #ffffff;
+}
+
+
+/* STATS ROW (4 KOLOM STATUS) */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+@media (max-width: 1100px) {
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 580px) {
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.stat-card {
+    padding: 20px 22px;
+    border-radius: 16px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card-active {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2), 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px);
+}
+
+/* WARNA KARTU METRIK: KONSISTEN DARI KODE WARNA ASLI POLYGON PETA DENGAN OPACITY */
+.stat-card-normal {
+    background-color: rgba(16, 185, 129, 0.16); /* #10b981 (Normal) */
+}
+.stat-card-normal:hover {
+    background-color: rgba(16, 185, 129, 0.24);
+}
+.stat-card-normal.stat-card-active {
+    background-color: rgba(16, 185, 129, 0.28);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.4);
+}
+
+.stat-card-waspada {
+    background-color: rgba(245, 158, 11, 0.16); /* #f59e0b (Waspada) */
+}
+.stat-card-waspada:hover {
+    background-color: rgba(245, 158, 11, 0.24);
+}
+.stat-card-waspada.stat-card-active {
+    background-color: rgba(245, 158, 11, 0.28);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.4);
+}
+
+.stat-card-siaga {
+    background-color: rgba(249, 115, 22, 0.16); /* #f97316 (Siaga) */
+}
+.stat-card-siaga:hover {
+    background-color: rgba(249, 115, 22, 0.24);
+}
+.stat-card-siaga.stat-card-active {
+    background-color: rgba(249, 115, 22, 0.28);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.4);
+}
+
+.stat-card-awas {
+    background-color: rgba(239, 68, 68, 0.16); /* #ef4444 (Awas) */
+}
+.stat-card-awas:hover {
+    background-color: rgba(239, 68, 68, 0.24);
+}
+.stat-card-awas.stat-card-active {
+    background-color: rgba(239, 68, 68, 0.28);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.4);
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.4px;
+    line-height: 1.1;
+}
+
+.stat-unit {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-left: 4px;
+}
+
+.stat-status-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+/* MAP CARD (ROUNDED HERO) */
+.map-card {
+    background-color: var(--bg-surface);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+}
+
+.map-card-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.map-card-header h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.map-card-header p {
+    font-size: 0.825rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+}
+
+.map-card-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.775rem;
+    font-weight: 600;
+}
+
+.badge-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #2563eb;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/* PETA LEAFLET */
+#map {
+    width: 100%;
+    height: 520px;
+}
+
+/* =====================================
+   BARIS GRID KONTEN BAWAH (2 KOLOM: KIRI & KANAN)
+   ===================================== */
+.bottom-grid-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.bottom-grid-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media (max-width: 1024px) {
+    .bottom-grid-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =====================================
+   GRID CONTENT: LIST WILAYAH PERLU PERHATIAN (KOLOM KIRI)
+   ===================================== */
+.attention-card {
+    background-color: var(--bg-surface);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    padding: 20px 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+}
+
+.attention-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 12px;
+}
+
+.attention-title-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.attention-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+}
+
+.attention-subtitle {
+    font-size: 0.775rem;
+    color: var(--text-muted);
+}
+
+.attention-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.attention-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.attention-item:hover {
+    background-color: #f8fafc;
+}
+
+.attention-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+}
+
+.attention-rank {
+    font-size: 0.885rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    min-width: 18px;
+    flex-shrink: 0;
+}
+
+.attention-name {
+    font-size: 0.885rem;
+    font-weight: 600;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.attention-badge-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.attention-value-col {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 65px;
+    flex-shrink: 0;
+}
+
+.attention-value {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+/* BADGE INDIKATOR TANPA BORDER (ISI BOLD SOLID & TEKS KONTRAS) */
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.725rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #ffffff;
+    border: none;
+}
+
+.badge-normal {
+    background-color: #059669;
+    color: #ffffff;
+}
+
+.badge-waspada {
+    background-color: #d97706;
+    color: #ffffff;
+}
+
+.badge-siaga {
+    background-color: #ea580c;
+    color: #ffffff;
+}
+
+.badge-awas {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+.attention-footer {
+    margin-top: 4px;
+}
+
+.btn-see-all {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-main);
+    font-size: 0.825rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-see-all svg {
+    width: 15px;
+    height: 15px;
+    color: var(--text-muted);
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btn-see-all:hover {
+    background-color: #eff6ff;
+    border-color: #bfdbfe;
+    color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.btn-see-all:hover svg {
+    transform: translateX(3px);
+    color: var(--primary);
+}
+
+/* LEAFLET CUSTOM TOOLTIP & POPUP */
+.custom-map-popup .leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+}
+
+.custom-map-popup .leaflet-popup-content {
+    margin: 14px 16px;
+    line-height: 1.4;
+}
+
+.popup-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 170px;
+}
+
+.popup-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.popup-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.popup-val {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.popup-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.popup-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.popup-footer {
+    font-size: 0.7rem;
+    color: #64748b;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 6px;
+    margin-top: 4px;
+}
+
+/* =====================================
+   KARTU TREN UTAMA PROVINSI (KOLOM KANAN)
+   ===================================== */
+.trend-card {
+    background-color: var(--bg-surface);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    padding: 20px 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+}
+
+.trend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 12px;
+    gap: 12px;
+}
+
+.trend-title-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.trend-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+}
+
+.trend-subtitle {
+    font-size: 0.775rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.trend-insight-clean {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px 0 2px 0;
+}
+
+.trend-insight-heading {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.3px;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.trend-insight-desc {
+    font-size: 0.825rem;
+    font-weight: 500;
+    color: #64748b;
+    line-height: 1.45;
+    margin: 0;
+}
+
+.trend-chart-wrapper {
+    position: relative;
+    width: 100%;
+    height: 245px;
+    flex: 1;
+    min-height: 220px;
+}
+
+.trend-stats-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid #f8fafc;
+    flex-wrap: wrap;
+}
+
+.trend-stat-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #f8fafc;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+}
+
+.chip-label {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.chip-value {
+    color: var(--text-main);
+    font-weight: 700;
+}
+
+@media (max-width: 640px) {
+    .trend-stats-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .trend-stat-chip {
+        justify-content: space-between;
+    }
+}
+
+/* =====================================
+   KOMPONEN EMPTY STATE & MULTI-INDIKATOR
+   ===================================== */
+.filter-item-indicator .period-select {
+    min-width: 220px;
+    font-weight: 600;
+}
+
+.empty-state-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 38px 20px;
+    gap: 8px;
+    flex: 1;
+    min-height: 220px;
+}
+
+.empty-state-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    margin-bottom: 4px;
+}
+
+.empty-state-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.empty-state-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #334155;
+    margin: 0;
+}
+
+.empty-state-desc {
+    font-size: 0.8rem;
+    color: #64748b;
+    max-width: 280px;
+    line-height: 1.45;
+    margin: 0;
+}
+
+.badge-nodata {
+    background-color: #94a3b8;
+    color: #ffffff;
+}
+
+
